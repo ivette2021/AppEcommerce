@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">eCommerce</string>
+    <string name ="Item_Inicio">Inicio</string>
+    <string name ="Item_Chats">Chats</string>
+    <string name ="Item_vender">vender</string>
+    <string name ="Item_Mis_Anuncios">Mis anuncios</string>
+    <string name ="Item_Cuenta">Cuenta</string>
+    <string name="TituloRL">Ecommerce</string>
 </resources>

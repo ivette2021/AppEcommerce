@@ -6,15 +6,15 @@ plugins {
 
 android {
     namespace 'com.ivetteVG.ecommerce'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.ivetteVG.ecommerce"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -30,6 +30,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    buildFeatures{
+        viewBinding = true
     }
 }
 
