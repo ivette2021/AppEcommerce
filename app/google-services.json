@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "138700624541",
+    "project_id": "appecommerce-db515",
+    "storage_bucket": "appecommerce-db515.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138700624541:android:81cf72ba5735ffa1243a74",
+        "android_client_info": {
+          "package_name": "com.ivetteVG.ecommerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS6mXNpKN__uZBMfmurqL07TwoPmbzoz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
