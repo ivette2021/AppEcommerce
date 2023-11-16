@@ -8,15 +8,20 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
+        android:id="@+id/ToolbarRl"
         android:layout_width="match_parent"
         android:layout_height="@dimen/m_toolbar_height">
 
         <TextView
             android:id="@+id/TituloRL"
-            android:text="@string/TituloRL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/poppins_extrabold"
+            android:text="@string/TituloRL"
+            android:textColor="@color/ic_compra_venta_background"
+            android:textSize="16sp"
+            android:textStyle="bold" />
         <View
 
             android:layout_width="match_parent"
@@ -25,11 +30,13 @@
             android:layout_alignParentBottom="true"
             />
     </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/FragmentL1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/View1"/>
+        android:layout_above="@id/View1"
+        android:layout_marginBottom="2dp" />
 
     <View
         android:id="@+id/View1"
