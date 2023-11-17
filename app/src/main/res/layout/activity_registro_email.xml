@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/bg_color_degradado_3"
     android:layout_height="match_parent"
     tools:context=".Registro_email">
 
@@ -94,6 +95,7 @@
             android:id="@+id/Btn_registrar"
             android:text="@string/Btn_registrar"
             android:textAllCaps="true"
+            android:backgroundTint="@color/amarillo"
             android:layout_marginTop="15dp"
             android:layout_width="180dp"
             android:layout_height="@dimen/m_button_height"/>

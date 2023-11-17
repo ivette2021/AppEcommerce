@@ -70,6 +70,7 @@
             android:layout_width="180dp"
             android:layout_height="@dimen/m_button_height"
             android:layout_marginTop="15dp"
+            android:backgroundTint="#3D3964"
             android:text="@string/Btn_ingresar"
             android:textAllCaps="true" />
 
