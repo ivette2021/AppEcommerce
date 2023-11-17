@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_list"
-    tools:context=".Opciones_Login.Login_email">
+    tools:context=".Registro_email">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -17,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Txt_login"
+            android:text="@string/Txt_registro"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -25,9 +24,10 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="15dp"
-            android:src="@drawable/login" />
+            android:src="@drawable/registro" />
 
-        <!--email-->
+
+        <!--Email-->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,15 +38,16 @@
             app:boxCornerRadiusTopStart="8dp">
 
             <EditText
-                android:id="@+id/Et_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:hint="@string/Et_email"
-                android:inputType="textEmailAddress" />
+                android:id="@+id/Et_email"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!--                password-->
+
+        <!--contraseña-->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,48 +55,51 @@
             app:boxCornerRadiusBottomEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusTopStart="8dp">
+            app:boxCornerRadiusTopStart="8dp"
+            app:passwordToggleEnabled="true">
 
             <EditText
                 android:id="@+id/Et_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:hint="@string/Et_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
 
         </com.google.android.material.textfield.TextInputLayout>
-        <!--boton ingresar-->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/Btn_ingresar"
-            android:layout_width="180dp"
-            android:layout_height="@dimen/m_button_height"
-            android:layout_marginTop="15dp"
-            android:text="@string/Btn_ingresar"
-            android:textAllCaps="true" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+
+        <!--repetir contraseña-->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/Et_r_password"
+                android:hint="@string/Et_r_password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+        
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/Btn_registrar"
+            android:text="@string/Btn_registrar"
+            android:textAllCaps="true"
             android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Txt_no_cuenta"/>
-            <TextView
-                android:id="@+id/Txt_registrarme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Txt_registrarme"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            android:layout_width="180dp"
+            android:layout_height="@dimen/m_button_height"/>
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 
 </RelativeLayout>
