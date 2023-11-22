@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.ivetteVG.ecommerce.Constantes
+import com.ivetteVG.ecommerce.EditarPerfil
 import com.ivetteVG.ecommerce.OpcionesLogin
 import com.ivetteVG.ecommerce.R
 import com.ivetteVG.ecommerce.databinding.FragmentCuentaBinding
@@ -44,6 +45,10 @@ class FragmentCuenta : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         firebaseAuth = FirebaseAuth.getInstance()
         leerInfo()
+
+        binding.BtnEditarPerfil.setOnClickListener {
+            startActivity(Intent(mContext, EditarPerfil::class.java))
+        }
 
         binding.BtnCerrarSesion.setOnClickListener {
             firebaseAuth.signOut()
