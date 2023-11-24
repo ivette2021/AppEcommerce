@@ -15,6 +15,6 @@ object Constantes { //clase nos servira para crear diversas funciones
         val calendario = Calendar.getInstance(Locale.ENGLISH)
         calendario.timeInMillis = tiempo
 
-        return DateFormat.format("DD/MM/YYYY", calendario).toString()
+        return DateFormat.format("dd/MM/yyyy", calendario).toString()
     }
 }

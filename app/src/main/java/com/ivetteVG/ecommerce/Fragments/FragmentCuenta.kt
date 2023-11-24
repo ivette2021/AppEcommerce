@@ -73,10 +73,10 @@ class FragmentCuenta : Fragment() {
                     val f_nac = "${snapshot.child("fecha_nac").value}"
                     var tiempo = "${snapshot.child("tiempo").value}"
                     val telefono = "${snapshot.child("telefono").value}"
-                    val codtelefono = "${snapshot.child("codigoTelefono").value}"
+                    val codTelefono = "${snapshot.child("codigoTelefono").value}"
                     val proveedor = "${snapshot.child("proveedor").value}"
 
-                    val cod_tel = codtelefono + telefono
+                    val cod_tel = codTelefono+telefono
 
                     if (tiempo == "null") {
                         tiempo = "0"
@@ -110,6 +110,8 @@ class FragmentCuenta : Fragment() {
                         }else{
                             binding.TvEstadoCuenta.text ="No Verificado"
                         }
+                    }else{
+                        binding.TvEstadoCuenta.text ="Verificado"
                     }
                 }
 
