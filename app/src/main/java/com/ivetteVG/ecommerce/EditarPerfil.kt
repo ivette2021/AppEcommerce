@@ -1,11 +1,18 @@
 package com.ivetteVG.ecommerce
 
+import android.app.Activity
 import android.app.ProgressDialog
+import android.content.ContentValues
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -18,6 +25,8 @@ class EditarPerfil : AppCompatActivity() {
     private lateinit var binding: ActivityEditarPerfilBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var progressDialog: ProgressDialog
+
+    private var imageUri: Uri?= null //creamos esta variable tipo uri para almacenar y inicializamos como posible nulo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,10 +106,115 @@ class EditarPerfil : AppCompatActivity() {
             val itemId = item.itemId
             if (itemId == 1) {
                 //Cámara
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
+                    concederPermisoCamara.launch(arrayOf(android.Manifest.permission.CAMERA))
+                } else {
+                    concederPermisoCamara.launch(
+                        arrayOf(
+                            android.Manifest.permission.CAMERA,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
+                    )
+                }
             } else if (itemId == 2) {
                 //galeria
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
+                    imagenGaleria() //si el usuario desea abrir galeria de un sdk igual o superior a tiramisu se ejecuta esta funcion
+                } else {
+                    concederPermisoAlmacenamiento.launch(
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+
+                    )
+                }
+
             }
             return@setOnMenuItemClickListener true
         }
     }
+
+    //crearemos un metodo
+    private val concederPermisoCamara =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultado ->
+            var concedidoTodos = true
+            for (seConcede in resultado.values) {
+                concedidoTodos = concedidoTodos && seConcede
+            }
+
+            if (concedidoTodos) {
+                imageCamara()
+            } else {
+                Toast.makeText(
+                    this,
+                    "El permiso de la camara o almacenamiento a sido denegado o ambas fueron denegadas",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+    private fun imageCamara() {
+        val contentValues = ContentValues()
+        contentValues.put(MediaStore.Images.Media.TITLE, "Titulo_imagen")//sacar imagen con una alta calidad
+        contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Descripcion_Imagen")
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        resultadoCamara_ARL.launch(intent)
+    }
+
+    private val resultadoCamara_ARL = //gestionar si la foto fue tomada correctamente
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            resultado ->
+            if (resultado.resultCode == Activity.RESULT_OK){
+                try {
+                    Glide.with(this)
+                        .load(imageUri)
+                        .placeholder(R.drawable.img_perfil)
+                        .into(binding.imgPerfil)
+                }catch (e:Exception){
+
+                }
+            }else{
+                Toast.makeText(this,"Cancelado",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+    private val concederPermisoAlmacenamiento =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { esConcedido ->
+            if (esConcedido) {
+                imagenGaleria()
+            } else {
+                Toast.makeText(
+                    this,
+                    "El permiso de almacenamiento a sido denegado",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+    private fun imagenGaleria() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"//con esto decimos que cuando se habra la galeria solo tengamos a disposicion imagenes
+        resultadoGaleria_ARL.launch(intent)
+    }
+
+    private  val resultadoGaleria_ARL =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){resultado->
+            if (resultado.resultCode ==Activity.RESULT_OK){ //si la imagen due seleccionada correctamente
+                val data = resultado.data
+                imageUri = data!!.data
+                //setear el imageview
+                try {
+                    Glide.with(this)
+                        .load(imageUri)
+                        .placeholder(R.drawable.img_perfil)
+                        .into(binding.imgPerfil)
+                }catch (e:Exception){
+
+                }
+            }else{
+                Toast.makeText(this,"Cancelado",Toast.LENGTH_SHORT).show()
+            }
+        }
 }
