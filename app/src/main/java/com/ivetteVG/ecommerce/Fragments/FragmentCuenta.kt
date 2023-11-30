@@ -44,6 +44,7 @@ class FragmentCuenta : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         firebaseAuth = FirebaseAuth.getInstance()
+
         leerInfo()
 
         binding.BtnEditarPerfil.setOnClickListener {
@@ -63,7 +64,7 @@ class FragmentCuenta : Fragment() {
     }
 
     private fun leerInfo() {
-        val ref = FirebaseDatabase.getInstance().getReference("Usuario")
+        val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
         ref.child("${firebaseAuth.uid}")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

@@ -43,9 +43,59 @@ class EditarPerfil : AppCompatActivity() {
 
         cargarInfo()
 
+        binding.BtnActualizar.setOnClickListener {
+            validarInfo()
+        }
+
         binding.FABCambiarImg.setOnClickListener {
             select_imagen_de()
         }
+    }
+
+
+    private var nombres = ""
+    private var f_nac = ""
+    private var codigo = ""
+    private var telefono = ""
+    private fun validarInfo() {
+        nombres = binding.EtNombres.text.toString().trim()
+        f_nac = binding.EtFNac.text.toString().trim()
+        codigo = binding.selectorCod.selectedCountryCodeWithPlus
+        telefono = binding.EtTelefono.text.toString().trim()
+
+        if (nombres.isEmpty()) {
+            Toast.makeText(this, "Ingrese sus nombres", Toast.LENGTH_SHORT).show()
+        } else if (f_nac.isEmpty()) {
+            Toast.makeText(this, "Ingrese su fecha de nacimiento", Toast.LENGTH_SHORT).show()
+        } else if (codigo.isEmpty()) {
+            Toast.makeText(this, "Ingrese un codigo", Toast.LENGTH_SHORT).show()
+        } else if (telefono.isEmpty()) {
+            Toast.makeText(this, "Ingrese su numero de telefono", Toast.LENGTH_SHORT).show()
+        } else {
+            actualizarInfo()
+        }
+    }
+
+    private fun actualizarInfo() {
+        progressDialog.setMessage("Actualizar informacion")
+
+        val hashMap: HashMap<String, Any> = HashMap()
+
+         hashMap["nombres"] = "${nombres}"
+         hashMap ["fecha_nac"] = "${f_nac}"
+         hashMap ["codigoTelefono"] = "${codigo}"
+         hashMap ["telefono"] = "${telefono}"
+        val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
+        ref.child(firebaseAuth.uid!!)
+            .updateChildren(hashMap)
+            .addOnSuccessListener {
+                progressDialog.dismiss()
+                Toast.makeText(this,"Se actualizo su informacion", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener{e->
+                progressDialog.dismiss()
+                Toast.makeText(this,"${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun cargarInfo() {
@@ -123,8 +173,8 @@ class EditarPerfil : AppCompatActivity() {
         progressDialog.setMessage("Actualizando imagen")
         progressDialog.show()
 
-        val hashMap : HashMap<String, Any> = HashMap()
-        if (imageUri != null){
+        val hashMap: HashMap<String, Any> = HashMap()
+        if (imageUri != null) {
             hashMap["urlImagenPerfil"] = urlImagenCargada
         }
         val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
@@ -132,9 +182,13 @@ class EditarPerfil : AppCompatActivity() {
             .updateChildren(hashMap)
             .addOnSuccessListener {
                 progressDialog.dismiss()
-                Toast.makeText(applicationContext, "Su imagen de perfil se ha actualizado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "Su imagen de perfil se ha actualizado",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            .addOnFailureListener {e->
+            .addOnFailureListener { e ->
                 progressDialog.dismiss()
                 Toast.makeText(applicationContext, "${e.message}", Toast.LENGTH_SHORT).show()
             }
