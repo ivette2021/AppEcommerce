@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
+import com.ivetteVG.ecommerce.Anuncios.CrearAnuncio
 import com.ivetteVG.ecommerce.Fragments.FragmentChats
 import com.ivetteVG.ecommerce.Fragments.FragmentCuenta
 import com.ivetteVG.ecommerce.Fragments.FragmentInicio
@@ -47,6 +48,9 @@ class MainActivity : AppCompatActivity() {
                     false
                 }
             }
+        }
+        binding.FAB.setOnClickListener {
+            startActivity(Intent(this, CrearAnuncio::class.java))
         }
     }
 
