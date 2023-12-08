@@ -23,6 +23,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.ivetteVG.ecommerce.Adaptadores.AdaptadorImagenSeleccionada
 import com.ivetteVG.ecommerce.Constantes
 import com.ivetteVG.ecommerce.Modelo.ModeloImageSeleccionada
@@ -63,6 +65,10 @@ class CrearAnuncio : AppCompatActivity() {
         binding.agregarImg.setOnClickListener {
             mostrarOpciones()
         }
+
+        binding.BtnCrearAnuncio.setOnClickListener {
+            validarDatos()
+        }
     }
 
     private var marca = ""
@@ -76,13 +82,107 @@ class CrearAnuncio : AppCompatActivity() {
     private var longitud = 0.0
 
     private fun validarDatos() {
-marca = binding.EtMarca.text.toString().trim()
+        marca = binding.EtMarca.text.toString().trim()
         categoria = binding.Categoria.text.toString().trim()
         condicion = binding.Condicion.text.toString().trim()
         direccion = binding.Locacion.text.toString().trim()
         precio = binding.EtPrecio.text.toString().trim()
         titulo = binding.EtTitulo.text.toString().trim()
         descripcion = binding.EtDescripcion.text.toString().trim()
+
+        if (marca.isEmpty()) {
+            binding.EtMarca.error = "Ingrese una marca"
+            binding.EtMarca.requestFocus()
+        } else if (categoria.isEmpty()) {
+            binding.Categoria.error = "Ingrese una categoria"
+            binding.Categoria.requestFocus()
+        } else if (condicion.isEmpty()) {
+            binding.Condicion.error = "Ingrese una condicion"
+            binding.Condicion.requestFocus()
+        } else if (precio.isEmpty()) {
+            binding.EtPrecio.error = "Ingrese una precio"
+            binding.EtPrecio.requestFocus()
+        } else if (titulo.isEmpty()) {
+            binding.EtTitulo.error = "Ingrese una Titulo"
+            binding.EtTitulo.requestFocus()
+        } else if (descripcion.isEmpty()) {
+            binding.EtDescripcion.error = "Ingrese una descripcion"
+            binding.EtDescripcion.requestFocus()
+        } else if (imagenUri == null) {
+            Toast.makeText(this, "Agregue al menos una imagen", Toast.LENGTH_SHORT).show()
+        } else {
+            agregarAnuncio()
+        }
+    }
+
+    private fun agregarAnuncio() {
+        progressDialog.setMessage("Agregando Anuncio")
+        progressDialog.show()
+
+        val tiempo = Constantes.obtenerTiempoDis()
+        val ref = FirebaseDatabase.getInstance().getReference("Anuncios")
+        val keyId = ref.push().key
+
+        val hashMap = HashMap<String, Any>()
+        hashMap["id"] = "${keyId}"
+        hashMap["uid"] = "${firebaseAuth.uid}"
+        hashMap["marca"] = "${marca}"
+        hashMap["categoria"] = "${categoria}"
+        hashMap["condicion"] = "${condicion}"
+        hashMap["direccion"] = "${direccion}"
+        hashMap["precio"] = "${precio}"
+        hashMap["titulo"] = "${titulo}"
+        hashMap["descripcion"] = "${descripcion}"
+        hashMap["estado"] = "${Constantes.anuncio_disponible}"
+        hashMap["tiempo"] = tiempo
+        hashMap["latitud"] = latitud
+        hashMap["longitud"] = longitud
+
+        ref.child(keyId!!)
+            .setValue(hashMap)
+            .addOnSuccessListener {
+                cargaImagenesStorage(keyId)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this, "${e.message}", Toast.LENGTH_SHORT
+                ).show()
+
+            }
+    }
+
+    private fun cargaImagenesStorage(keyId: String) {
+        for (i in imagenSelecArrayList.indices) {
+            val modeloImagenSel = imagenSelecArrayList[i]
+            val nombreImagen = modeloImagenSel.id
+            val rutaNombreImagen = "Anuncios/$nombreImagen"
+
+            val storageReference = FirebaseStorage.getInstance().getReference(rutaNombreImagen)
+            storageReference.putFile(modeloImagenSel.imagenUri!!)
+                .addOnSuccessListener { taskSnaphot ->
+                    val uriTask = taskSnaphot.storage.downloadUrl
+                    while (!uriTask.isSuccessful);
+                    val urlImgCargada = uriTask.result
+                    if (uriTask.isSuccessful) {
+                        val hashMap = HashMap<String, Any>()
+                        hashMap["id"] = "${modeloImagenSel.imagenUri}"
+                        hashMap["imagenUrl"] = "${urlImgCargada}"
+
+                        val ref = FirebaseDatabase.getInstance().getReference("Anuncios") //hacemos una referencia a la base de datos anuncios
+                        ref.child(keyId).child("Imagenes")
+                            .child(nombreImagen)
+                            .updateChildren(hashMap)
+                    }
+                    progressDialog.dismiss()
+                    onBackPressedDispatcher.onBackPressed()
+                    Toast.makeText(this, "Se publico su anuncio",
+                    Toast.LENGTH_SHORT).show()
+
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun mostrarOpciones() {
@@ -167,6 +267,7 @@ marca = binding.EtMarca.text.toString().trim()
                 val modeloImgSel = ModeloImageSeleccionada(
                     tiempo, imagenUri, null, false
                 )
+                imagenSelecArrayList.add(modeloImgSel)
                 cargaImagenes()
             } else {
                 Toast.makeText(this, "Cancelado", Toast.LENGTH_SHORT).show()
@@ -195,6 +296,7 @@ marca = binding.EtMarca.text.toString().trim()
                 val modeloImgSel = ModeloImageSeleccionada(
                     tiempo, imagenUri, null, false
                 )
+                imagenSelecArrayList.add(modeloImgSel)
                 cargaImagenes()
             } else {
                 Toast.makeText(this, "Cancelado", Toast.LENGTH_SHORT).show()
