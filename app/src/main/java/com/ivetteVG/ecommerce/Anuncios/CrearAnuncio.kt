@@ -29,6 +29,7 @@ import com.ivetteVG.ecommerce.Adaptadores.AdaptadorImagenSeleccionada
 import com.ivetteVG.ecommerce.Constantes
 import com.ivetteVG.ecommerce.Modelo.ModeloImageSeleccionada
 import com.ivetteVG.ecommerce.R
+import com.ivetteVG.ecommerce.SeleccionarUbicacion
 import com.ivetteVG.ecommerce.databinding.ActivityCrearAnuncioBinding
 
 class CrearAnuncio : AppCompatActivity() {
@@ -65,7 +66,10 @@ class CrearAnuncio : AppCompatActivity() {
         binding.agregarImg.setOnClickListener {
             mostrarOpciones()
         }
-
+        binding.Locacion.setOnClickListener {
+            startActivity(Intent(this, SeleccionarUbicacion::class.java))
+            seleccionarUbicacion_ARL.launch(intent)
+        }
         binding.BtnCrearAnuncio.setOnClickListener {
             validarDatos()
         }
@@ -113,6 +117,20 @@ class CrearAnuncio : AppCompatActivity() {
         } else {
             agregarAnuncio()
         }
+    }
+
+private val seleccionarUbicacion_ARL =
+    registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ resultado ->
+        if (resultado.resultCode == Activity.RESULT_OK){
+            val data = resultado.data
+            if (data != null){
+                latitud = data.getDoubleExtra("latitud", 0.0)
+                longitud = data.getDoubleExtra("longitud", 0.0)
+                direccion = data.getStringExtra("direccion") ?: ""
+            }
+
+        }
+
     }
 
     private fun agregarAnuncio() {
