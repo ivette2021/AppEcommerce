@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         fragmentTransition.replace(binding.FragmentL1.id, fragment, "FragmentCuenta")
         fragmentTransition.commit()
     }
-    private fun readKeysFromFile() {
+    private fun readKeysFromFile() { //funcion que se utiliza para setear varibale desde ruta res/raw/keys.txt
         try {
             val inputStream: InputStream = resources.openRawResource(R.raw.keys)
             val reader = BufferedReader(InputStreamReader(inputStream))
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-    private fun setApiKeysInManifest() {
+    private fun setApiKeysInManifest() { //seteo metada en el manifest en base a lo de arriba
         val applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
 
         // Configura la clave de Firebase en el manifest
