@@ -59,6 +59,10 @@
     <string name="Et_descripcion">Descripcion</string>
     <string name="Btn_crear_anuncio">Crear anuncio</string>
 
+    <!--    Mapas-->
+    <string name="Txt_selec_ubicacion">Seleccione ubicacion</string>
+    <string name="Btn_listo">Listo</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_crear_anuncio">CrearAnuncio</string>

@@ -67,7 +67,7 @@ class CrearAnuncio : AppCompatActivity() {
             mostrarOpciones()
         }
         binding.Locacion.setOnClickListener {
-            startActivity(Intent(this, SeleccionarUbicacion::class.java))
+           val intent = Intent(this, SeleccionarUbicacion::class.java)
             seleccionarUbicacion_ARL.launch(intent)
         }
         binding.BtnCrearAnuncio.setOnClickListener {
@@ -127,6 +127,10 @@ private val seleccionarUbicacion_ARL =
                 latitud = data.getDoubleExtra("latitud", 0.0)
                 longitud = data.getDoubleExtra("longitud", 0.0)
                 direccion = data.getStringExtra("direccion") ?: ""
+
+                binding.Locacion.setText(direccion)
+            }else  {
+                Toast.makeText(this, "Cancelado", Toast.LENGTH_SHORT).show()
             }
 
         }
