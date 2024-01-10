@@ -129,10 +129,10 @@ private val seleccionarUbicacion_ARL =
                 direccion = data.getStringExtra("direccion") ?: ""
 
                 binding.Locacion.setText(direccion)
-            }else  {
-                Toast.makeText(this, "Cancelado", Toast.LENGTH_SHORT).show()
             }
 
+        }else  {
+            Toast.makeText(this, "Cancelado", Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -196,9 +196,9 @@ private val seleccionarUbicacion_ARL =
                             .updateChildren(hashMap)
                     }
                     progressDialog.dismiss()
-                    onBackPressedDispatcher.onBackPressed()
                     Toast.makeText(this, "Se publico su anuncio",
                     Toast.LENGTH_SHORT).show()
+                    limpiarCampos()
 
                 }
                 .addOnFailureListener { e ->
@@ -207,6 +207,18 @@ private val seleccionarUbicacion_ARL =
         }
     }
 
+
+    private fun limpiarCampos(){
+        imagenSelecArrayList.clear()
+        adaptadorImagenSel.notifyDataSetChanged()
+        binding.EtMarca.setText("")
+        binding.Categoria.setText("")
+        binding.Condicion.setText("")
+        binding.Locacion.setText("")
+        binding.EtPrecio.setText("")
+        binding.EtTitulo.setText("")
+        binding.EtDescripcion.setText("")
+    }
     private fun mostrarOpciones() {
         val popupMenu = PopupMenu(this, binding.agregarImg)
 
