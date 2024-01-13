@@ -57,6 +57,7 @@ class EditarPerfil : AppCompatActivity() {
     private var f_nac = ""
     private var codigo = ""
     private var telefono = ""
+    //creando comentario verificando conexion
     private fun validarInfo() {
         nombres = binding.EtNombres.text.toString().trim()
         f_nac = binding.EtFNac.text.toString().trim()
