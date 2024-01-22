@@ -72,7 +72,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
@@ -83,6 +86,7 @@
             app:contentPadding="10dp">
 
             <TextView
+                android:id="@+id/lugarSelecTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -90,10 +94,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/Btn_listo"
-            android:text="@string/Btn_listo"
-            android:textAllCaps="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/Btn_listo"
+            android:textAllCaps="true"
             app:cornerRadius="8dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
