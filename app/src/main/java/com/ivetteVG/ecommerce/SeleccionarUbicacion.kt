@@ -46,7 +46,6 @@ class SeleccionarUbicacion : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
 
-        Places.initialize(this,getString(R.raw.keys))
         mPlaceClient = Places.createClient(this)
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
