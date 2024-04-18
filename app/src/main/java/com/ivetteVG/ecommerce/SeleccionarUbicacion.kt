@@ -2,6 +2,7 @@ package com.ivetteVG.ecommerce
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
@@ -28,7 +29,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import com.ivetteVG.ecommerce.Manifest
+
 import com.ivetteVG.ecommerce.databinding.ActivitySeleccionarUbicacionBinding
 
 class SeleccionarUbicacion : AppCompatActivity(), OnMapReadyCallback {
@@ -99,7 +100,7 @@ class SeleccionarUbicacion : AppCompatActivity(), OnMapReadyCallback {
         })
         binding.IbGps.setOnClickListener {
             if (esGpsActivado()) {
-
+                solicitarPermisoLocacion.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             } else {
                 Toast.makeText(
                     this,
@@ -113,6 +114,8 @@ class SeleccionarUbicacion : AppCompatActivity(), OnMapReadyCallback {
             intent.putExtra("latitud", selectedLatitude)
             intent.putExtra("longitud", selectedLongitude)
             intent.putExtra("longitud", direccion)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
     }
 
@@ -122,18 +125,24 @@ class SeleccionarUbicacion : AppCompatActivity(), OnMapReadyCallback {
         }
         detectAndShowDeviceLocationMap()
     }
-@SuppressLint("MissingPermission")
+
+    @SuppressLint("MissingPermission")
     private fun detectAndShowDeviceLocationMap() {
         try {
             val locationResult = mFusedLocationProviderClient!!.lastLocation
-            locationResult.addOnSuccessListener { location->
-                if(location!=null){
+            locationResult.addOnSuccessListener { location ->
+                if (location != null) {
                     mLastKnowLocation = location
                     selectedLatitude = location.latitude
                     selectedLongitude = location.longitude
 
                     val latLng = LatLng(selectedLatitude!!, selectedLongitude!!)
-                    mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM.toFloat()))
+                    mMap!!.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            latLng,
+                            DEFAULT_ZOOM.toFloat()
+                        )
+                    )
                     mMap!!.animateCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM.toFloat()))
 
                     direccionLatLng(latLng)
@@ -164,7 +173,7 @@ class SeleccionarUbicacion : AppCompatActivity(), OnMapReadyCallback {
         }
         return !(!gpsEnable && !networkEnable)
     }
-
+    @SuppressLint("MissingPermission")
     private val solicitarPermisoLocacion: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { seConcede ->
             if (seConcede) {

@@ -103,7 +103,12 @@ class CrearAnuncio : AppCompatActivity() {
         } else if (condicion.isEmpty()) {
             binding.Condicion.error = "Ingrese una condicion"
             binding.Condicion.requestFocus()
-        } else if (precio.isEmpty()) {
+
+        } else if (direccion.isEmpty()) {
+            binding.Locacion.error = "Ingrese una locacion"
+            binding.Locacion.requestFocus()
+
+        }else if (precio.isEmpty()) {
             binding.EtPrecio.error = "Ingrese una precio"
             binding.EtPrecio.requestFocus()
         } else if (titulo.isEmpty()) {
